@@ -3,7 +3,7 @@ import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
 
 const PROTECTED_PREFIXES = ["/admin/produits", "/admin/commandes"];
 
-export async function proxy(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const isProtected = PROTECTED_PREFIXES.some((p) =>
     req.nextUrl.pathname.startsWith(p)
   );
