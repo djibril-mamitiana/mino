@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
+import { ImageOff } from "lucide-react";
 import { formatPrice } from "@/lib/money";
 
 type Product = {
@@ -9,9 +10,7 @@ type Product = {
   name: string;
   description: string;
   priceCents: number;
-  emoji: string;
-  colorFrom: string;
-  colorTo: string;
+  imageUrl: string;
   featured: boolean;
   active: boolean;
   categoryId: string;
@@ -24,9 +23,7 @@ const emptyForm = {
   name: "",
   description: "",
   price: "",
-  emoji: "🍪",
-  colorFrom: "#f5c37c",
-  colorTo: "#e08a3e",
+  imageUrl: "",
   categoryId: "",
   featured: false,
   active: true,
@@ -60,9 +57,7 @@ export function AdminProductsClient({ categories }: { categories: Category[] }) 
       name: p.name,
       description: p.description,
       price: (p.priceCents / 100).toString(),
-      emoji: p.emoji,
-      colorFrom: p.colorFrom,
-      colorTo: p.colorTo,
+      imageUrl: p.imageUrl,
       categoryId: p.categoryId,
       featured: p.featured,
       active: p.active,
@@ -83,9 +78,7 @@ export function AdminProductsClient({ categories }: { categories: Category[] }) 
       name: form.name,
       description: form.description,
       priceCents: Math.round(parseFloat(form.price) * 100),
-      emoji: form.emoji,
-      colorFrom: form.colorFrom,
-      colorTo: form.colorTo,
+      imageUrl: form.imageUrl,
       categoryId: form.categoryId,
       featured: form.featured,
       active: form.active,
@@ -151,55 +144,46 @@ export function AdminProductsClient({ categories }: { categories: Category[] }) 
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold text-stone-700">
-              Prix (€)
-            </label>
-            <input
-              required
-              type="number"
-              step="0.01"
-              min="0.01"
-              value={form.price}
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-stone-200 px-3 py-2 focus:border-amber-500 focus:outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-stone-700">
-              Emoji
-            </label>
-            <input
-              value={form.emoji}
-              onChange={(e) => setForm({ ...form, emoji: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-stone-200 px-3 py-2 focus:border-amber-500 focus:outline-none"
-            />
-          </div>
+        <div>
+          <label className="block text-sm font-semibold text-stone-700">
+            Prix (€)
+          </label>
+          <input
+            required
+            type="number"
+            step="0.01"
+            min="0.01"
+            value={form.price}
+            onChange={(e) => setForm({ ...form, price: e.target.value })}
+            className="mt-1 w-full rounded-lg border border-stone-200 px-3 py-2 focus:border-amber-500 focus:outline-none"
+          />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold text-stone-700">
-              Couleur 1
-            </label>
-            <input
-              type="color"
-              value={form.colorFrom}
-              onChange={(e) => setForm({ ...form, colorFrom: e.target.value })}
-              className="mt-1 h-10 w-full rounded-lg border border-stone-200"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-stone-700">
-              Couleur 2
-            </label>
-            <input
-              type="color"
-              value={form.colorTo}
-              onChange={(e) => setForm({ ...form, colorTo: e.target.value })}
-              className="mt-1 h-10 w-full rounded-lg border border-stone-200"
-            />
+        <div>
+          <label className="block text-sm font-semibold text-stone-700">
+            Photo (chemin ou URL)
+          </label>
+          <input
+            required
+            value={form.imageUrl}
+            onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+            placeholder="/images/products/mon-produit.jpg"
+            className="mt-1 w-full rounded-lg border border-stone-200 px-3 py-2 focus:border-amber-500 focus:outline-none"
+          />
+          <div className="mt-2 flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg border border-dashed border-stone-300 bg-stone-50">
+            {form.imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={form.imageUrl}
+                alt="Aperçu"
+                className="h-full w-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
+              />
+            ) : (
+              <ImageOff className="h-6 w-6 text-stone-300" />
+            )}
           </div>
         </div>
 
@@ -275,13 +259,13 @@ export function AdminProductsClient({ categories }: { categories: Category[] }) 
                 key={p.id}
                 className="flex items-center gap-4 rounded-2xl border border-amber-100 bg-white p-4"
               >
-                <div
-                  className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl text-2xl"
-                  style={{
-                    background: `linear-gradient(135deg, ${p.colorFrom}, ${p.colorTo})`,
-                  }}
-                >
-                  {p.emoji}
+                <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl bg-stone-100">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.imageUrl}
+                    alt={p.name}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-stone-800">

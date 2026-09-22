@@ -1,3 +1,5 @@
+import Image from "next/image";
+import { Phone, Clock, MapPin } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 export const revalidate = 0;
@@ -26,18 +28,36 @@ export default async function NosBoutiquesPage() {
           {stores.map((store) => (
             <div
               key={store.id}
-              className="rounded-2xl border border-amber-100 bg-white p-6 shadow-sm"
+              className="overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-sm"
             >
-              <h2 className="font-serif text-xl font-bold text-stone-900">
-                {store.name}
-              </h2>
-              <p className="mt-2 text-stone-600">
-                {store.address}
-                <br />
-                {store.postalCode} {store.city}
-              </p>
-              <p className="mt-3 text-sm text-stone-500">📞 {store.phone}</p>
-              <p className="mt-1 text-sm text-stone-500">🕒 {store.hours}</p>
+              <div className="relative h-48 w-full">
+                <Image
+                  src={store.imageUrl}
+                  alt={store.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h2 className="font-serif text-xl font-bold text-stone-900">
+                  {store.name}
+                </h2>
+                <p className="mt-2 flex items-start gap-2 text-stone-600">
+                  <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-700" />
+                  <span>
+                    {store.address}
+                    <br />
+                    {store.postalCode} {store.city}
+                  </span>
+                </p>
+                <p className="mt-3 flex items-center gap-2 text-sm text-stone-500">
+                  <Phone className="h-4 w-4 text-amber-700" /> {store.phone}
+                </p>
+                <p className="mt-1 flex items-center gap-2 text-sm text-stone-500">
+                  <Clock className="h-4 w-4 text-amber-700" /> {store.hours}
+                </p>
+              </div>
             </div>
           ))}
         </div>

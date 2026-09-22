@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Cookie } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -6,7 +7,9 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-2 text-white">
-            <span className="text-2xl">🍪</span>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-600">
+              <Cookie className="h-4 w-4" />
+            </span>
             <span className="font-serif text-lg font-bold">La Biscuiterie Dorée</span>
           </div>
           <p className="mt-3 text-sm leading-relaxed text-stone-400">

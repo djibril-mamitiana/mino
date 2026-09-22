@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Minus, Plus, Check } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 
 export function ProductDetailActions({
@@ -12,9 +13,7 @@ export function ProductDetailActions({
     slug: string;
     name: string;
     priceCents: number;
-    emoji: string;
-    colorFrom: string;
-    colorTo: string;
+    imageUrl: string;
   };
 }) {
   const { addItem } = useCart();
@@ -29,9 +28,7 @@ export function ProductDetailActions({
         slug: product.slug,
         name: product.name,
         unitCents: product.priceCents,
-        emoji: product.emoji,
-        colorFrom: product.colorFrom,
-        colorTo: product.colorTo,
+        imageUrl: product.imageUrl,
       },
       quantity
     );
@@ -48,18 +45,18 @@ export function ProductDetailActions({
         <div className="flex items-center rounded-full border border-amber-200">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            className="px-3 py-1.5 text-lg text-stone-600 hover:text-amber-700"
+            className="p-2 text-stone-600 hover:text-amber-700"
             aria-label="Diminuer la quantité"
           >
-            −
+            <Minus className="h-4 w-4" />
           </button>
           <span className="w-8 text-center font-semibold">{quantity}</span>
           <button
             onClick={() => setQuantity((q) => q + 1)}
-            className="px-3 py-1.5 text-lg text-stone-600 hover:text-amber-700"
+            className="p-2 text-stone-600 hover:text-amber-700"
             aria-label="Augmenter la quantité"
           >
-            +
+            <Plus className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -67,13 +64,19 @@ export function ProductDetailActions({
       <div className="flex flex-wrap gap-3">
         <button
           onClick={handleAdd}
-          className={`rounded-full px-6 py-3 text-sm font-semibold transition-colors ${
+          className={`flex items-center gap-1.5 rounded-full px-6 py-3 text-sm font-semibold transition-colors ${
             added
               ? "bg-green-600 text-white"
               : "bg-amber-700 text-white hover:bg-amber-800"
           }`}
         >
-          {added ? "Ajouté au panier ✓" : "Ajouter au panier"}
+          {added ? (
+            <>
+              <Check className="h-4 w-4" /> Ajouté au panier
+            </>
+          ) : (
+            "Ajouter au panier"
+          )}
         </button>
         <button
           onClick={() => {

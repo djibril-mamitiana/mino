@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
+import { Check } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/money";
 
@@ -11,9 +13,7 @@ export type ProductCardData = {
   name: string;
   description: string;
   priceCents: number;
-  emoji: string;
-  colorFrom: string;
-  colorTo: string;
+  imageUrl: string;
 };
 
 export function ProductCard({ product }: { product: ProductCardData }) {
@@ -26,9 +26,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
       slug: product.slug,
       name: product.name,
       unitCents: product.priceCents,
-      emoji: product.emoji,
-      colorFrom: product.colorFrom,
-      colorTo: product.colorTo,
+      imageUrl: product.imageUrl,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
@@ -36,15 +34,14 @@ export function ProductCard({ product }: { product: ProductCardData }) {
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-sm transition-shadow hover:shadow-lg">
-      <Link href={`/produits/${product.slug}`}>
-        <div
-          className="flex aspect-square items-center justify-center text-6xl transition-transform group-hover:scale-105"
-          style={{
-            background: `linear-gradient(135deg, ${product.colorFrom}, ${product.colorTo})`,
-          }}
-        >
-          {product.emoji}
-        </div>
+      <Link href={`/produits/${product.slug}`} className="relative block aspect-square overflow-hidden">
+        <Image
+          src={product.imageUrl}
+          alt={product.name}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+        />
       </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <Link href={`/produits/${product.slug}`}>
@@ -61,13 +58,19 @@ export function ProductCard({ product }: { product: ProductCardData }) {
           </span>
           <button
             onClick={handleAdd}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
               added
                 ? "bg-green-600 text-white"
                 : "bg-amber-700 text-white hover:bg-amber-800"
             }`}
           >
-            {added ? "Ajouté ✓" : "Ajouter"}
+            {added ? (
+              <>
+                <Check className="h-4 w-4" /> Ajouté
+              </>
+            ) : (
+              "Ajouter"
+            )}
           </button>
         </div>
       </div>

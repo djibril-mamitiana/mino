@@ -21,9 +21,7 @@ model Product {
   name        String
   description String
   priceCents  Int
-  emoji       String      @default("🍪")
-  colorFrom   String      @default("#f5c37c")
-  colorTo     String      @default("#e08a3e")
+  imageUrl    String      @default("/images/products/cookie-pepites-chocolat.jpg")
   featured    Boolean     @default(false)
   active      Boolean     @default(true)
   categoryId  String
@@ -41,6 +39,7 @@ model Store {
   postalCode String
   phone      String
   hours      String
+  imageUrl   String @default("/images/boutique.jpg")
   order      Int    @default(0)
 }
 

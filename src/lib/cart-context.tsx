@@ -14,9 +14,7 @@ export type CartItem = {
   slug: string;
   name: string;
   unitCents: number;
-  emoji: string;
-  colorFrom: string;
-  colorTo: string;
+  imageUrl: string;
   quantity: number;
 };
 

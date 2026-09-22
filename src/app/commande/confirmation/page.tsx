@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PartyPopper } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/money";
 
@@ -36,7 +37,7 @@ export default async function ConfirmationPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6">
-      <div className="text-5xl">🎉</div>
+      <PartyPopper className="mx-auto h-14 w-14 text-amber-700" />
       <h1 className="mt-4 font-serif text-3xl font-bold text-stone-900">
         Merci {order.customerName.split(" ")[0]} !
       </h1>

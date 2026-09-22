@@ -47,9 +47,7 @@ export default async function CoffretsPage() {
                   name: p.name,
                   description: p.description,
                   priceCents: p.priceCents,
-                  emoji: p.emoji,
-                  colorFrom: p.colorFrom,
-                  colorTo: p.colorTo,
+                  imageUrl: p.imageUrl,
                 }}
               />
             ))}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { Cookie, ShoppingBag, Menu, X } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 
 const NAV_LINKS = [
@@ -22,7 +23,9 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-amber-100 bg-[#fffaf0]/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="text-2xl">🍪</span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-700 text-white">
+            <Cookie className="h-5 w-5" />
+          </span>
           <span className="font-serif text-lg font-bold tracking-tight text-stone-800 sm:text-xl">
             La Biscuiterie Dorée
           </span>
@@ -47,7 +50,7 @@ export function SiteHeader() {
             href="/panier"
             className="relative flex items-center gap-2 rounded-full bg-amber-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-800"
           >
-            🛍️ Panier
+            <ShoppingBag className="h-4 w-4" /> Panier
             {totalCount > 0 && (
               <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-stone-900 text-xs font-bold text-white">
                 {totalCount}
@@ -59,7 +62,7 @@ export function SiteHeader() {
             className="rounded-md border border-amber-200 p-2 text-stone-700 md:hidden"
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? "✕" : "☰"}
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>

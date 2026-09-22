@@ -1,9 +1,23 @@
+import Image from "next/image";
+import { Wheat, ChefHat, Heart } from "lucide-react";
+
 export default function NotreHistoirePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
       <h1 className="font-serif text-4xl font-bold text-stone-900">
         Notre histoire
       </h1>
+
+      <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-3xl">
+        <Image
+          src="/images/notre-histoire.jpg"
+          alt="Nos pâtissiers préparant les cookies à la main"
+          fill
+          sizes="(max-width: 768px) 100vw, 768px"
+          priority
+          className="object-cover"
+        />
+      </div>
 
       <div className="mt-8 space-y-6 leading-relaxed text-stone-700">
         <p>
@@ -33,21 +47,21 @@ export default function NotreHistoirePage() {
 
       <div className="mt-12 grid gap-6 sm:grid-cols-3">
         <div className="rounded-2xl bg-amber-50 p-6 text-center">
-          <div className="text-3xl">🌾</div>
+          <Wheat className="mx-auto h-8 w-8 text-amber-700" />
           <h3 className="mt-2 font-serif font-semibold">Ingrédients choisis</h3>
           <p className="mt-1 text-sm text-stone-600">
             Des produits sélectionnés pour leur qualité et leur fraîcheur.
           </p>
         </div>
         <div className="rounded-2xl bg-amber-50 p-6 text-center">
-          <div className="text-3xl">👩‍🍳</div>
+          <ChefHat className="mx-auto h-8 w-8 text-amber-700" />
           <h3 className="mt-2 font-serif font-semibold">Savoir-faire artisanal</h3>
           <p className="mt-1 text-sm text-stone-600">
             Chaque cookie est préparé et cuit à la main dans nos fournils.
           </p>
         </div>
         <div className="rounded-2xl bg-amber-50 p-6 text-center">
-          <div className="text-3xl">💛</div>
+          <Heart className="mx-auto h-8 w-8 text-amber-700" />
           <h3 className="mt-2 font-serif font-semibold">Fait avec passion</h3>
           <p className="mt-1 text-sm text-stone-600">
             Une équipe passionnée, heureuse de partager sa gourmandise.

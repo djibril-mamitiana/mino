@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/money";
 import { ProductDetailActions } from "@/components/product-detail-actions";
@@ -40,13 +41,15 @@ export default async function ProductPage({
       </nav>
 
       <div className="grid gap-10 md:grid-cols-2">
-        <div
-          className="flex aspect-square items-center justify-center rounded-3xl text-9xl"
-          style={{
-            background: `linear-gradient(135deg, ${product.colorFrom}, ${product.colorTo})`,
-          }}
-        >
-          {product.emoji}
+        <div className="relative aspect-square overflow-hidden rounded-3xl">
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+            className="object-cover"
+          />
         </div>
 
         <div className="flex flex-col gap-4">
@@ -69,9 +72,7 @@ export default async function ProductPage({
               slug: product.slug,
               name: product.name,
               priceCents: product.priceCents,
-              emoji: product.emoji,
-              colorFrom: product.colorFrom,
-              colorTo: product.colorTo,
+              imageUrl: product.imageUrl,
             }}
           />
         </div>
@@ -92,9 +93,7 @@ export default async function ProductPage({
                   name: p.name,
                   description: p.description,
                   priceCents: p.priceCents,
-                  emoji: p.emoji,
-                  colorFrom: p.colorFrom,
-                  colorTo: p.colorTo,
+                  imageUrl: p.imageUrl,
                 }}
               />
             ))}

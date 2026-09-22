@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { ShoppingBag, Minus, Plus, X } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/money";
 
@@ -10,7 +12,7 @@ export default function PanierPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6">
-        <div className="text-5xl">🛍️</div>
+        <ShoppingBag className="mx-auto h-14 w-14 text-amber-700" />
         <h1 className="mt-4 font-serif text-3xl font-bold text-stone-900">
           Votre panier est vide
         </h1>
@@ -39,13 +41,14 @@ export default function PanierPage() {
             key={item.productId}
             className="flex items-center gap-4 rounded-2xl border border-amber-100 bg-white p-4"
           >
-            <div
-              className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-xl text-3xl"
-              style={{
-                background: `linear-gradient(135deg, ${item.colorFrom}, ${item.colorTo})`,
-              }}
-            >
-              {item.emoji}
+            <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
+              <Image
+                src={item.imageUrl}
+                alt={item.name}
+                fill
+                sizes="64px"
+                className="object-cover"
+              />
             </div>
             <div className="flex-1">
               <Link
@@ -61,20 +64,20 @@ export default function PanierPage() {
             <div className="flex items-center rounded-full border border-amber-200">
               <button
                 onClick={() => setQuantity(item.productId, item.quantity - 1)}
-                className="px-3 py-1.5 text-stone-600 hover:text-amber-700"
+                className="p-2 text-stone-600 hover:text-amber-700"
                 aria-label="Diminuer la quantité"
               >
-                −
+                <Minus className="h-4 w-4" />
               </button>
               <span className="w-8 text-center font-semibold">
                 {item.quantity}
               </span>
               <button
                 onClick={() => setQuantity(item.productId, item.quantity + 1)}
-                className="px-3 py-1.5 text-stone-600 hover:text-amber-700"
+                className="p-2 text-stone-600 hover:text-amber-700"
                 aria-label="Augmenter la quantité"
               >
-                +
+                <Plus className="h-4 w-4" />
               </button>
             </div>
             <div className="w-24 text-right font-semibold text-stone-800">
@@ -85,7 +88,7 @@ export default function PanierPage() {
               aria-label="Retirer du panier"
               className="text-stone-400 hover:text-red-600"
             >
-              ✕
+              <X className="h-4 w-4" />
             </button>
           </div>
         ))}

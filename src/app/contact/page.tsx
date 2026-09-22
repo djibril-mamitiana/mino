@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { Mail, Phone, Clock } from "lucide-react";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -27,9 +28,15 @@ export default function ContactPage() {
           <h2 className="font-serif text-xl font-bold text-stone-900">
             Nos coordonnées
           </h2>
-          <p className="text-stone-600">✉️ bonjour@biscuiterie-doree.fr</p>
-          <p className="text-stone-600">📞 01 23 45 67 89</p>
-          <p className="text-stone-600">🕒 Du mardi au dimanche, 9h – 19h</p>
+          <p className="flex items-center gap-2 text-stone-600">
+            <Mail className="h-4 w-4 text-amber-700" /> bonjour@biscuiterie-doree.fr
+          </p>
+          <p className="flex items-center gap-2 text-stone-600">
+            <Phone className="h-4 w-4 text-amber-700" /> 01 23 45 67 89
+          </p>
+          <p className="flex items-center gap-2 text-stone-600">
+            <Clock className="h-4 w-4 text-amber-700" /> Du mardi au dimanche, 9h – 19h
+          </p>
         </div>
 
         <form
