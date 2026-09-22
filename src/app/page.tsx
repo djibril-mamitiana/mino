@@ -1,6 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Cookie, Heart, CakeSlice, Gift, ArrowRight } from "lucide-react";
+import {
+  Cookie,
+  Heart,
+  CakeSlice,
+  Gift,
+  ArrowRight,
+  Store,
+  Star,
+  Users,
+  Award,
+} from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product-card";
 
@@ -13,14 +23,39 @@ const CATEGORY_ICONS: Record<string, typeof Cookie> = {
   "coffrets-cadeaux": Gift,
 };
 
+const TESTIMONIALS = [
+  {
+    name: "Camille R.",
+    city: "Paris",
+    rating: 5,
+    comment:
+      "Le cookie caramel beurre salé est juste parfait : croustillant dehors, fondant dedans. Devenu un rituel du samedi matin.",
+  },
+  {
+    name: "Karim B.",
+    city: "Lyon",
+    rating: 5,
+    comment:
+      "Le coffret Prestige a fait sensation pour l'anniversaire d'un collègue. Présentation soignée et cookies délicieux.",
+  },
+  {
+    name: "Élodie M.",
+    city: "Bordeaux",
+    rating: 4,
+    comment:
+      "J'adore le cookie vegan flocons d'avoine, enfin une option gourmande qui n'a rien à envier aux autres.",
+  },
+];
+
 export default async function HomePage() {
-  const [featured, categories] = await Promise.all([
+  const [featured, categories, storeCount] = await Promise.all([
     prisma.product.findMany({
       where: { active: true, featured: true },
       take: 4,
       orderBy: { createdAt: "desc" },
     }),
     prisma.category.findMany({ orderBy: { order: "asc" } }),
+    prisma.store.count(),
   ]);
 
   return (
@@ -64,6 +99,32 @@ export default async function HomePage() {
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Chiffres clés */}
+      <section className="border-y border-amber-100 bg-white py-10">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 sm:px-6 md:grid-cols-4">
+          <div className="flex flex-col items-center gap-2 text-center">
+            <Store className="h-7 w-7 text-amber-700" />
+            <span className="text-2xl font-bold text-stone-900">{storeCount}</span>
+            <span className="text-sm text-stone-500">Boutiques</span>
+          </div>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <Cookie className="h-7 w-7 text-amber-700" />
+            <span className="text-2xl font-bold text-stone-900">50 000+</span>
+            <span className="text-sm text-stone-500">Cookies vendus</span>
+          </div>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <Star className="h-7 w-7 text-amber-700" />
+            <span className="text-2xl font-bold text-stone-900">4,8/5</span>
+            <span className="text-sm text-stone-500">Note moyenne</span>
+          </div>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <Users className="h-7 w-7 text-amber-700" />
+            <span className="text-2xl font-bold text-stone-900">10 000+</span>
+            <span className="text-sm text-stone-500">Clients gourmands</span>
           </div>
         </div>
       </section>
@@ -129,6 +190,43 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Avis clients */}
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="flex items-center justify-center gap-2">
+          <Award className="h-6 w-6 text-amber-700" />
+          <h2 className="text-center font-serif text-3xl font-bold text-stone-900">
+            Ce que nos clients en disent
+          </h2>
+        </div>
+        <div className="mt-10 grid gap-6 sm:grid-cols-3">
+          {TESTIMONIALS.map((t) => (
+            <div
+              key={t.name}
+              className="flex flex-col gap-3 rounded-2xl border border-amber-100 bg-white p-6 shadow-sm"
+            >
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-4 w-4 ${
+                      i < t.rating
+                        ? "fill-amber-500 text-amber-500"
+                        : "text-stone-200"
+                    }`}
+                  />
+                ))}
+              </div>
+              <p className="flex-1 text-sm leading-relaxed text-stone-600">
+                &ldquo;{t.comment}&rdquo;
+              </p>
+              <p className="text-sm font-semibold text-stone-800">
+                {t.name} <span className="font-normal text-stone-400">— {t.city}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Bannière histoire */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
