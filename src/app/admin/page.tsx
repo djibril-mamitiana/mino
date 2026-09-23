@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { Cookie, Package } from "lucide-react";
+import { Cookie, Package, Tags, Store } from "lucide-react";
 import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
 import { AdminLoginForm } from "@/components/admin-login-form";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
@@ -27,12 +27,15 @@ export default async function AdminPage() {
     );
   }
 
-  const [productCount, orderCount, pendingCount, revenueAgg] = await Promise.all([
-    prisma.product.count(),
-    prisma.order.count(),
-    prisma.order.count({ where: { status: "EN_ATTENTE" } }),
-    prisma.order.aggregate({ _sum: { totalCents: true } }),
-  ]);
+  const [productCount, orderCount, pendingCount, revenueAgg, categoryCount, storeCount] =
+    await Promise.all([
+      prisma.product.count(),
+      prisma.order.count(),
+      prisma.order.count({ where: { status: "EN_ATTENTE" } }),
+      prisma.order.aggregate({ _sum: { totalCents: true } }),
+      prisma.category.count(),
+      prisma.store.count(),
+    ]);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
@@ -88,6 +91,30 @@ export default async function AdminPage() {
           </h2>
           <p className="mt-1 text-sm text-stone-500">
             Suivre et mettre à jour le statut des commandes clients.
+          </p>
+        </Link>
+        <Link
+          href="/admin/categories"
+          className="rounded-2xl border border-amber-100 bg-white p-6 shadow-sm hover:shadow-md"
+        >
+          <h2 className="flex items-center gap-2 font-serif text-xl font-bold text-stone-900">
+            <Tags className="h-5 w-5 text-amber-700" /> Gérer les catégories
+          </h2>
+          <p className="mt-1 text-sm text-stone-500">
+            {categoryCount} catégorie{categoryCount > 1 ? "s" : ""} configurée
+            {categoryCount > 1 ? "s" : ""} pour organiser la boutique.
+          </p>
+        </Link>
+        <Link
+          href="/admin/boutiques"
+          className="rounded-2xl border border-amber-100 bg-white p-6 shadow-sm hover:shadow-md"
+        >
+          <h2 className="flex items-center gap-2 font-serif text-xl font-bold text-stone-900">
+            <Store className="h-5 w-5 text-amber-700" /> Gérer les boutiques
+          </h2>
+          <p className="mt-1 text-sm text-stone-500">
+            {storeCount} boutique{storeCount > 1 ? "s" : ""} affichée
+            {storeCount > 1 ? "s" : ""} sur le site.
           </p>
         </Link>
       </div>
